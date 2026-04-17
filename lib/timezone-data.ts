@@ -8,7 +8,7 @@ export interface CityData {
 }
 
 // These IDs must match the 'id' fields in your data/cities.json
-export const DEFAULT_CITY_IDS = ["nyc", "ldn", "sf"]
+export const DEFAULT_CITY_IDS = ["new-york", "london", "los-angeles"]
 
 export function getLiveOffset(timezone: string): number {
   try {
