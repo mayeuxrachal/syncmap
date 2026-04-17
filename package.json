@@ -1,6 +1,6 @@
 {
   "name": "time-overlap-tool",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -43,7 +43,8 @@
     "tailwind-merge": "latest",
     "react-day-picker": "^9.0.0",
     "date-fns": "^3.6.0",
-    "embla-carousel-react": "^8.0.0"
+    "embla-carousel-react": "^8.0.0",
+    "recharts": "^2.12.7"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
