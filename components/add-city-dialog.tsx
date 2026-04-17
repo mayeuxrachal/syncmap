@@ -13,7 +13,7 @@ interface AddCityDialogProps {
   existingCityIds: Set<string>
 }
 
-const SUGGESTED_CITY_IDS = ["london", "new-york", "tokyo", "dubai", "singapore", "los-angeles", "denver", "chicago", "berlin"]
+const DEFAULT_CITY_IDS = ["london", "new-york", "tokyo", "dubai", "singapore", "los-angeles", "denver", "chicago", "berlin"]
 
 export function AddCityDialog({ open, onOpenChange, onAddCity, existingCityIds }: AddCityDialogProps) {
   const [cityQuery, setCityQuery] = useState("");
