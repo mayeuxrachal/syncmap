@@ -69,6 +69,7 @@ export function TimeSlider({ utcHour, onUtcHourChange, cities }: TimeSliderProps
       {/* 2. Main Slider Container (Kept your original h-18 and styling) */}
       <div
         className="relative h-24 cursor-pointer select-none rounded-xl border border-glass-border bg-glass backdrop-blur-xl overflow-hidden touch-none"
+        style={{ touchAction: 'none' }}
         onClick={handleClick}
         onMouseMove={handleDrag}
         onTouchStart={handleTouchMove}
