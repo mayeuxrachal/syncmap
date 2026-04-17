@@ -18,12 +18,11 @@ const STORAGE_KEYS = {
 }
 
 export default function Page() {
+  // 1. Set the Hardcoded Defaults immediately
   const [cities, setCities] = useState<CityData[]>(() => {
-    // 1. Filter the master JSON to find only your default IDs (nyc, ldn, sf)
-    const defaults = (allCities as CityData[]).filter(city => 
-      DEFAULT_CITY_IDS.includes(city.id)
-    )
-    return defaults
+  return (allCities as CityData[]).filter(city => 
+    DEFAULT_CITY_IDS.includes(city.id)
+  )
   })
   const [utcHour, setUtcHour] = useState(new Date().getUTCHours() + new Date().getUTCMinutes() / 60)
   const [dialogOpen, setDialogOpen] = useState(false)
@@ -42,18 +41,22 @@ export default function Page() {
     return () => document.removeEventListener("keydown", down)
   }, [])
 
-  // Initialize on mount from localStorage (if available), falling back to live UTC
+  // 2. The Critical "Mount" Check
   useEffect(() => {
     try {
       // 1. Keep the city loading logic (this is good)
       const storedCities = window.localStorage.getItem(STORAGE_KEYS.cities)
       if (storedCities) {
-        const parsed = JSON.parse(storedCities) as CityData[]
-        if (Array.isArray(parsed) && parsed.length > 0) {
+        try {
+          const parsed = JSON.parse(storedCities) as CityData[]
+        // Only override if the user actually has saved data
+          if (Array.isArray(parsed) && parsed.length > 0) {
           setCities(parsed)
+          }
+        } catch (e) {
+        console.error("Storage parse error", e)
         }
       }
-  
       // 2. IGNORE the stored hour and force Live Mode
       setUtcHour(getCurrentUtcHour())
       setIsLive(true)
@@ -91,14 +94,14 @@ export default function Page() {
     setUtcHour(Math.floor(getCurrentUtcHour()))
   }, [])
 
-  // Persist cities when they change
+  // 3. The Guarded Persistence
   useEffect(() => {
+    // If we haven't mounted yet, don't write to storage
+    // This prevents the "Default" state from overwriting 
+    // existing user data before the load is finished.
     if (!mounted) return
-    try {
-      window.localStorage.setItem(STORAGE_KEYS.cities, JSON.stringify(cities))
-    } catch {
-      // ignore storage failures
-    }
+  
+    window.localStorage.setItem(STORAGE_KEYS.cities, JSON.stringify(cities))
   }, [cities, mounted])
 
   // Persist slider position when it changes
