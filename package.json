@@ -1,6 +1,6 @@
 {
   "name": "time-overlap-tool",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -47,7 +47,13 @@
     "recharts": "^2.12.7",
     "cmdk": "^1.0.0",
     "vaul": "^0.9.1",
-    "input-otp": "^1.2.4"
+    "input-otp": "^1.2.4",
+    "react-hook-form": "^7.52.1",
+    "zod": "^3.23.8",
+    "@hookform/resolvers": "^3.9.0",
+    "framer-motion": "^11.3.1",
+    "tailwindcss-animate": "latest",
+    "sonner": "latest"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
