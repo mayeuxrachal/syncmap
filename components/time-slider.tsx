@@ -32,25 +32,21 @@ export function TimeSlider({ utcHour, onUtcHourChange, cities }: TimeSliderProps
   const currentLocalHour = getLocalFromUtc(utcHour)
 
   // 3. User Interaction (Local Space -> UTC Data)
-  const handleClick = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
-      const rect = e.currentTarget.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const fraction = x / rect.width;
-    
-      // Map the horizontal click to a decimal hour (0.0 to 23.0)
-      const insetFraction = (fraction * 100 - PAD) / (100 - 2 * PAD);
-      const localHourDecimal = Math.max(0, Math.min(23.99, insetFraction * 24));
-      
-      // Convert this decimal local time back to UTC
-      onUtcHourChange(getUtcFromLocal(localHourDecimal));
-    },
-    [onUtcHourChange, getUtcFromLocal, PAD]
-  )
+  const handleInteraction = useCallback((clientX: number, target: HTMLDivElement) => {
+    const rect = target.getBoundingClientRect();
+    const fraction = (clientX - rect.left) / rect.width;
+    const insetFraction = (fraction * 100 - PAD) / (100 - 2 * PAD);
+    const localHourDecimal = Math.max(0, Math.min(23.99, insetFraction * 24));
+    onUtcHourChange(getUtcFromLocal(localHourDecimal));
+  }, [onUtcHourChange, getUtcFromLocal]);
 
-  const handleDrag = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.buttons === 1) handleClick(e)
-  }, [handleClick])
+  const handleClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => handleInteraction(e.clientX, e.currentTarget), [handleInteraction]);
+  const handleDrag = useCallback((e: React.MouseEvent<HTMLDivElement>) => { 
+    if (e.buttons === 1) handleInteraction(e.clientX, e.currentTarget);
+  }, [handleInteraction]);
+  const handleTouchMove = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
+    handleInteraction(e.touches[0].clientX, e.currentTarget);
+  }, [handleInteraction]);
 
   return (
     <div className="w-full px-6 lg:px-10">
@@ -72,9 +68,10 @@ export function TimeSlider({ utcHour, onUtcHourChange, cities }: TimeSliderProps
 
       {/* 2. Main Slider Container (Kept your original h-18 and styling) */}
       <div
-        className="relative h-24 cursor-pointer select-none rounded-xl border border-glass-border bg-glass backdrop-blur-xl overflow-hidden"
+        className="relative h-24 cursor-pointer select-none rounded-xl border border-glass-border bg-glass backdrop-blur-xl overflow-hidden touch-none"
         onClick={handleClick}
         onMouseMove={handleDrag}
+        onTouchMove={handleTouchMove}
         role="slider"
         aria-label="Local hour selector"
       >
