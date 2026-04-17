@@ -1,6 +1,6 @@
 {
   "name": "time-overlap-tool",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -45,7 +45,9 @@
     "date-fns": "^3.6.0",
     "embla-carousel-react": "^8.0.0",
     "recharts": "^2.12.7",
-    "cmdk": "^1.0.0"
+    "cmdk": "^1.0.0",
+    "vaul": "^0.9.1",
+    "input-otp": "^1.2.4"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
